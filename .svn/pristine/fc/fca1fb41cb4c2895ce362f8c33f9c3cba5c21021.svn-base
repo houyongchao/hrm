@@ -1,0 +1,84 @@
+package com.hrm.controller;
+
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
+import com.hrm.dto.DepartDto;
+import com.hrm.pojo.Depart;
+import com.hrm.pojo.Salary;
+import com.hrm.service.DepartService;
+import com.hrm.service.SalaryService;
+
+@Controller
+@RequestMapping("/manager")
+public class ManagerController {
+	@Autowired
+	private SalaryService salaryService;
+	@Autowired
+	private DepartService departService;
+	
+	
+	@RequestMapping("/home")
+	public String home(){
+		return "manager-home";
+	}
+	@RequestMapping("/salary")
+	public String salary(Model model){
+		List<Salary> list = salaryService.findAll();
+		model.addAttribute("salaryList", list);
+		return "manager-salary";
+	}
+	@RequestMapping("/salaryfangan")
+	public String fangan(){
+		return "manager-salary-fangan";
+	}
+	@RequestMapping("/departsalary")
+	public String departsalary(){
+		return "manager-depart-salarystatis";
+	}
+	@RequestMapping(value="/depart.json",produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Depart> getDepart(HttpServletResponse response) throws IOException{
+		response.setCharacterEncoding("UTF-8");
+		List<Depart> list = departService.findAll();
+		List<DepartDto> departDtos = new ArrayList<DepartDto>();
+		for (Depart depart : list) {
+			DepartDto dto = new DepartDto();
+			dto.setEnglishnames(depart.getEnglishnames());
+			dto.setNames(depart.getNames());
+			departDtos.add(dto);
+		}
+		PrintWriter out = response.getWriter();
+		response.setContentType("application/json;charset=UTF-8");
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(departDtos);
+		System.out.println(json);
+		out.print(json);
+		
+		out.flush();
+		out.close();
+		return null;
+	} 
+	@RequestMapping(value="/searchsalary",method=RequestMethod.POST)
+	public String searchsalary(String yuefen,String bumen,Model model){
+		System.out.println(yuefen);
+		List<Salary> list = salaryService.findSalaryBysearch(yuefen, bumen);
+		model.addAttribute("salaryList", list);
+		return "manager-salary";
+	}
+}

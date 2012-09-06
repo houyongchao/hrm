@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.RewardsMapper">
+
+	<select id="findAll" resultType="Rewards">
+		select * from t_rewards;
+	</select>
+	<insert id="insert" parameterType="Rewards">
+		insert into t_rewards(id,approver,beizhu,category,content,dates,reason,workid) values(#{id},#{approver},#{beizhu},#{category},#{content},#{dates},#{reason},#{working.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_rewards where id = #{id}
+	</delete>
+	<update id="update" parameterType="Rewards">
+		update t_rewards set approver=#{approver},beizhu=#{beizhu},category=#{category},content=#{content},dates=#{dates},reason=#{reason},workid=#{working.id} where id=#{id}
+	</update>
+	
+	
+</mapper>

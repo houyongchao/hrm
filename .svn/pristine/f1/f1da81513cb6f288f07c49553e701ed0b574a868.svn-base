@@ -1,0 +1,13 @@
+package com.hrm.mapper;
+
+import java.util.List;
+
+import com.hrm.pojo.Salary;
+
+public interface SalaryMapper {
+
+	public List<Salary> findAll();
+	public float findByDepartid(String id);
+	public List<Salary> findByDepartid2(String id);
+	
+}

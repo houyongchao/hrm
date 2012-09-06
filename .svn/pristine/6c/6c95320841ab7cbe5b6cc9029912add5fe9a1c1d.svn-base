@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.ZhaopinMapper">
+
+	<select id="findById"  resultType="Zhaopin" parameterType="String" resultMap="zhaopinMapper">
+		SELECT * FROM t_zhaopin AS tz LEFT JOIN t_depart AS td ON tz.departid = td.id  WHERE tz.id=#{id}
+	</select>
+
+	<select id="findAll" resultType="Zhaopin" resultMap="zhaopinMapper">
+		
+		SELECT * FROM t_zhaopin AS tz LEFT JOIN t_depart AS td ON tz.departid = td.id 
+	</select>
+	
+	<select id="findAllSearch" resultType="Zhaopin" resultMap="zhaopinMapper" parameterType="ZhaopinDto">
+		SELECT * FROM t_zhaopin AS tz LEFT JOIN t_depart AS td ON tz.departid = td.id 
+		
+		<where>
+ 			<if test="position !='' ">
+ 				tz.position = #{position}
+ 			</if>
+ 			<if test="content !='' ">
+ 				and tz.content = #{content}
+ 			</if>
+ 			<if test="names !='' ">
+ 				and td.names = #{names}
+ 			</if>
+ 		</where>
+	</select>
+	
+	
+	<resultMap type="Zhaopin" id="zhaopinMapper">
+		<id column="id" property="id"/>
+		<result column="begindate" property="begindate"/>
+		<result column="enddate" property="enddate"/>
+		<result column="content" property="content"/>
+		<result column="qudao" property="qudao"/>
+		<result column="beizhu" property="beizhu"/>
+		<result column="position" property="position"/>
+		<result column="requirenum" property="requirenum"/>
+		<association property="depart" column="departid" javaType="Depart">
+			<id column="departid" property="id"/>
+			<result column="names" property="names"/>
+			<result column="englishnames" property="englishnames"/>
+		</association>
+	</resultMap>
+	<insert id="save" parameterType="Zhaopin">
+		insert into t_zhaopin(id,begindate,beizhu,content,position,qudao,requirenum,departid) values(#{id},#{begindate},#{beizhu},#{content},#{position},#{qudao},#{requirenum},#{depart.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_zhaopin where id = #{id}
+	</delete>
+	<update id="update" parameterType="Zhaopin">
+		update t_zhaopin set begindate=#{begindate},beizhu=#{beizhu},content=#{content},enddate=#{enddate},position=#{position},qudao=#{qudao},requirenum=#{requirenum},departid=#{depart.id} where id=#{id}
+	</update>
+	
+	
+</mapper>

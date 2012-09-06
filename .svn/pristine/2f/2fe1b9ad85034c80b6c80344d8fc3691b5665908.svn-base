@@ -1,0 +1,19 @@
+package com.hrm.mapper;
+
+import java.util.List;
+
+import com.hrm.pojo.Rewards;
+
+public interface RewardsMapper {
+
+	public Rewards findById(String id);
+	
+	public List<Rewards> findAll();
+	
+	public void insert(Rewards reward);
+	
+	public void del(String id);
+	
+	public void update(Rewards rewards);
+	
+}

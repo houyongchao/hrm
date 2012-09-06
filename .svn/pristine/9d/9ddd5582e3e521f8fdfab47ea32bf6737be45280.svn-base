@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.TrainningMapper">
+
+	<select id="findById" resultType="Trainning" parameterType="String" resultMap="trainningMapper">
+		select * from t_trainning as tr left join t_working as tw on tr.workid = tw.id left join t_trainagency AS ta ON tr.agencyid = ta.id where tr.id=#{id} and tw.zhuangtai = '在职人员'
+	</select>
+
+	<select id="findAllSearch" resultType="Trainning" resultMap="trainningMapper" parameterType="trainning">
+		select * from t_trainning as tr left join t_working as tw on tr.workid = tw.id left join t_trainagency AS ta ON tr.agencyid = ta.id 
+		<where>
+ 			<if test="category !='' ">
+ 				and tr.category = #{category}
+ 			</if>
+ 			<if test="keshi !='' ">
+ 				and tr.keshi = #{keshi}
+ 			</if>
+ 			<if test="kechengname !='' ">
+ 				and tr.kechenname = #{kechengname}
+ 			</if>
+ 		</where>
+	</select>
+	
+	<select id="findAll" resultType="Trainning"  resultMap="trainningMapper">
+		select * from t_trainning as tr left join t_working as tw on tr.workid = tw.id left join t_trainagency AS ta ON tr.agencyid = ta.id where tw.zhuangtai = '在职人员'
+	</select>
+	
+	<resultMap type="Trainning" id="trainningMapper">
+		<id column="id" property="id"/>
+		<result column="begindate" property="begindate"/>
+		<result column="enddate" property="enddate"/>
+		<result column="category" property="category"/>
+		<result column="kechengname" property="kechengname"/>
+		<result column="keshi" property="keshi"/>
+		<result column="beizhu" property="beizhu"/>
+		<association property="worker" column="workid" javaType="Working">
+			<id column="workid" property="id"/>
+			<result column="names" property="names"/>
+		</association>
+		<association property="agency" column="agencyid" javaType="TrainAgency">
+			<id column="agencyid" property="id"/>
+			<result column="names" property="names" />
+			<result column="contactemail" property="contactemail"/>
+		</association>
+	</resultMap>
+	
+	<insert id="save" parameterType="Trainning">
+		insert into t_trainning(id,begindate,enddate,category,kechengname,keshi,beizhu,agencyid,workid) values(#{id},#{begindate},#{enddate},#{category},#{kechengname},#{keshi},#{beizhu},#{agency.id},#{worker.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_trainning where id = #{id}
+	</delete>
+	<update id="update" parameterType="Trainning">
+		update t_trainning set begindate=#{begindate},enddate=#{enddate},category=#{category},kechengname=#{kechengname},keshi=#{keshi},beizhu=#{beizhu},agencyid=#{agency.id},workid=#{worker.id} where id=#{id}
+	</update>
+	
+	
+</mapper>

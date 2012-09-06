@@ -1,0 +1,74 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ include file="base.jsp" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  	 <link rel="stylesheet" type="text/css" href="${ basePath}/static/css/bootstrap.css" />
+    <title>本月试用到期人数列表</title>
+</head>
+<body>
+  	<div class="container" style="margin-top:20px; background-color:#fff;">
+		<div class="row">
+			<div class = "span2" style="font-size:14px;margin-right:20px margin-top:100px;">				
+				<ul class="nav nav-list" style="font-size:14px; " >					 					
+				  <li ><a href="#">在职人员</a></li>
+				   <li ><a href="#">离职人员</a></li>			   
+				  <li ><a href="#">试用人员</a></li>
+				  <li ><a href="#">本月入职0人</a></li>
+				  <li><a href="#">本月离职2人</a></li>
+				  <li  class="active"><a href="#">本月试用到期2人</a></li>
+				  <li><a href="#">本月生日1人</a></li>	
+				</ul>					
+			</div>
+			<div class="span9"  >
+				<div  style="height:250px;margin-top:0px;padding-top:15px;width:750px;">	
+					<table border="1px;" width="100%" style="height:180px;" class="table">
+						<tr>
+							<td>姓名</td>
+							<td>性别</td>
+							<td>年龄</td>
+							<td>入职日期</td>
+							<td>转正日期</td>
+							<td>岗位</td>								
+							<td>工龄</td>
+							<td>学历</td>
+							<td>职称</td>
+							<td>联系电话</td>
+							<td>籍贯</td>
+							<td>相关操作</td>
+						</tr>
+						<tr>
+							<td>彭恩静</td>
+							<td>男</td>
+							<td>23</td>
+							<td>2012.09.20</td>
+							<td>2012.09.24</td>
+							<td>JAVA工程师</td>
+							<td>1年</td>
+							<td>本科</td>
+							<td>职员</td>
+							<td>110</td>
+							<td>河南焦作</td>
+							<td>删除</td>
+						</tr>
+						<tr>
+							<td>啊 神</td>
+							<td>女</td>
+							<td>23</td>
+							<td>2012.09.22</td>
+							<td>2012.09.23</td>
+							<td>Java软件工程师</td>
+							<td>1年</td>
+							<td>本科</td>
+							<td>职员</td>
+							<td>119</td>
+							<td>河南焦作</td>
+							<td>删除</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

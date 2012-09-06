@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.SalaryMapper"> 
+ 
+	<select id="findAll" resultType="Salary" resultMap="salaryMap"> 
+	   SELECT * FROM t_salary AS ta LEFT JOIN t_working AS tw ON ta.workid = tw.id 
+	</select> 
+	<resultMap type="Salary" id="salaryMap">
+		<id property="id" column="id"/>
+		<result property="basesary" column="basesary"/>
+		<result property="businesssary" column="businesssary"/>
+		<result property="dates" column="dates"/>
+		<result property="depart" column="depart"/>
+		<result property="extralworkhour" column="extralworkhour"/>
+		<result property="extralworksalary" column="extralworksalary"/>
+		<result property="onbusinessday" column="onbusinessday"/>
+		<result property="shifa" column="shifa"/>
+		<result property="shijiakouchu" column="shijiakouchu"/>
+		<result property="shijiaxiaoshi" column="shijiaxiaoshi"/>
+		<result property="ticheng" column="ticheng"/>
+		<result property="total" column="total"/>
+		<result property="yuefen" column="yuefen"/>
+		<result property="workage" column="workage"/>
+		<result property="workagesary" column="workagesary"/>
+		<association property="worker" javaType="Working" column="workid">
+			<id property="id" column="id"/>
+			<result property="names" column="names"/>
+		</association>
+	
+	</resultMap>
+	<select id="findByDepartid" parameterType="String" resultType="float">
+		SELECT SUM(total) FROM t_salary WHERE departid = #{id};
+	</select>
+	<select id="findByDepartid2" parameterType="String" resultType="Salary">
+		SELECT * FROM t_salary WHERE departid = #{id};
+	</select>
+	<select id="findByDepartname" parameterType="String" resultType="String">
+		select id from t_depart where englishnames = #{name}
+	</select>
+ 	<select id="findBySearch" parameterType="String" resultType="Salary" resultMap="salaryMap" >
+ 		SELECT * FROM t_salary AS ta LEFT JOIN t_working AS tw ON ta.workid = tw.id 
+ 		<where>
+ 			<if test="yuefen != ''">
+ 				ta.yuefen = #{yuefen}
+ 			</if>
+ 			<if test="departid != ''">
+ 				and ta.departid = #{departid}
+ 			</if>
+ 		</where>
+ 	
+ 	</select>
+ 	
+ 	
+ 	
+ 	
+</mapper>

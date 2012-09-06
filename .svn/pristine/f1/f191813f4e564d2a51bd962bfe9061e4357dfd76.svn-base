@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.CheckMapper">
+
+	<select id="findAll" resultType="Check">
+		select * from t_check;
+	</select>
+	<insert id="save" parameterType="Check">
+		insert into t_check(id,during,beizhu,category,evaluate,dates,level,workid) values(#{id},#{during},#{beizhu},#{category},#{evaluate},#{dates},#{level},#{working.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_check where id = #{id}
+	</delete>
+	<update id="update" parameterType="Check">
+		update t_check set during=#{during},beizhu=#{beizhu},category=#{category},evaluate=#{evaluate},dates=#{dates},level=#{level},workid=#{working.id} where id=#{id}
+	</update>
+	
+	
+</mapper>

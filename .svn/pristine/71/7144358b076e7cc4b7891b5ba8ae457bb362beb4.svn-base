@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.CheckMapper">
+
+	<select id="findById" parameterType="String" resultType="Check" resultMap="checkMapper">
+		select * from t_check as tc left join t_working  as tw on tc.workid = tw.id where tc.id = #{id};
+	</select>
+
+	<select id="findAll" resultType="Check" resultMap="checkMapper">
+		select * from t_check as tc left join t_working  as tw on tc.workid = tw.id where tw.zhuangtai='在职人员';
+	</select>
+	<select id="findAllSearch" resultType="Check" resultMap="checkMapper" parameterType="Check">
+		select * from t_check as tc left join t_working  as tw on tc.workid = tw.id
+		<where>
+ 			<if test="check.category != '' ">
+ 				category = #{check.category}
+ 			</if>
+ 			<if test="check.during != '' ">
+ 				and during = #{check.during}
+ 			</if>
+ 			<if test="names != '' ">
+ 				and tw.names = #{names}
+ 			</if>
+ 		</where>
+	</select>
+	
+	<resultMap type="Check" id="checkMapper">
+		<id column="id" property="id"/>
+		<result column="during" property="during"/>
+		<result column="beizhu" property="beizhu"/>
+		<result column="category" property="category"/>
+		<result column="evaluate" property="evaluate"/>
+		<result column="dates" property="dates"/>
+		<result column="level" property="level"/>
+		<association property="worker" column="workid" javaType="Working">
+			<id column="workid" property="id"/>
+			<result column="names" property="names"/>
+		</association>
+	</resultMap>
+	<insert id="save" parameterType="Check">
+		insert into t_check(id,during,beizhu,category,evaluate,dates,level,workid) values(#{id},#{during},#{beizhu},#{category},#{evaluate},#{dates},#{level},#{worker.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_check where id = #{id}
+	</delete>
+	<update id="update" parameterType="Check">
+		update t_check set during=#{during},beizhu=#{beizhu},category=#{category},evaluate=#{evaluate},dates=#{dates},level=#{level},workid=#{worker.id} where id=#{id}
+	</update>
+	
+	
+</mapper>

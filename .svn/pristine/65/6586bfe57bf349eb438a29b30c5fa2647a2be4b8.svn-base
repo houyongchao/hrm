@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.ZhaopinMapper">
+
+	<select id="findAll" resultType="Zhaopin" resultMap="zhaopinMapper">
+		select * from t_zhaopin as tz left join t_depart_zhaopin as td on tz.id = td.zhaopinid LEFT JOIN t_depart AS tp ON tp.id = td.departid  ;
+	</select>
+	<resultMap type="Zhaopin" id="zhaopinMapper">
+		<id column="id" property="id"/>
+		<result column="begindate" property="begindate"/>
+		<result column="enddate" property="enddate"/>
+		<result column="content" property="content"/>
+		<result column="qudao" property="qudao"/>
+		<result column="beizhu" property="beizhu"/>
+		<result column="position" property="position"/>
+		<result column="requirenum" property="requirenum"/>
+		<collection property="Depart" ofType="Depart">
+			
+		</collection>
+	</resultMap>
+	<insert id="save" parameterType="Zhaopin">
+		insert into t_zhaopin(id,begindate,beizhu,content,enddate,position,qudao,requirenum,) values(#{id},#{begindate},#{beizhu},#{content},#{enddate},#{position},#{qudao},#{requirenum})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_zhaopin where id = #{id}
+	</delete>
+	<update id="update" parameterType="Zhaopin">
+		update t_zhaopin set begindate=#{begindate},beizhu=#{beizhu},content=#{content},enddate=#{enddate},position=#{position},qudao=#{qudao},requirenum=#{requirenum} where id=#{id}
+	</update>
+	
+	
+</mapper>

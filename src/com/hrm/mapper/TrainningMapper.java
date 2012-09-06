@@ -1,0 +1,21 @@
+package com.hrm.mapper;
+
+import java.util.List;
+
+import com.hrm.pojo.Trainning;
+
+public interface TrainningMapper {
+
+	
+	public List<Trainning> findAll();
+	
+	public Trainning findById(String id);
+	
+	public void save(Trainning trainning);
+	
+	public void del(String id);
+	
+	public void update(Trainning trainning);
+
+	public List<Trainning> findAllSearch(Trainning trainning);
+}

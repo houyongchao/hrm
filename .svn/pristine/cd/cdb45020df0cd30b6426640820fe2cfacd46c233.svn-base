@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.ZhiyuanMapper">
+	<select id="findZaizhi" resultType="list" resultMap="zaizhiMap">
+		SELECT * FROM t_working AS tw LEFT JOIN t_depart AS td ON tw.departid = td.id 
+	</select>
+	<resultMap type="Working" id="zaizhiMap">
+		<id property="id" column="id"/>
+		<result property="age" column="age"/>
+		<result property="birthday" column="birthday"/>
+		<result property="birthplace" column="birthplace"/>
+		<result property="contractdate" column="contractdate"/>
+		<result property="education" column="education"/>
+		<result property="employeeddate" column="employeeddate"/>
+		<result property="formoflabor" column="formoflabor"/>
+		<result property="hiredate" column="hiredate"/>
+		<result property="names" column="names"/>
+		<result property="position" column="position"/>
+		<result property="sex" column="sex"/>
+		<result property="tel" column="tel"/>
+		<result property="title" column="title"/>
+		<result property="workage" column="workage"/>
+		<result property="zhuangtai" column="zhuangtai"/>
+		<association property="depart" javaType="Depart" column="departid">
+			<id property="id" column="id"/>
+			<result property="names" column="names"/>
+			<result property="englishnames" column="englishnames"/>
+		</association>
+	</resultMap>
+	<select id="findByZaizhi" resultType="list" resultMap="zaizhiMap">
+		SELECT * FROM t_working AS tw LEFT JOIN t_depart AS td ON tw.departid = td.id 
+		<where>
+			<if test="names != ''">
+				tw.names = #{names}
+			</if>
+			<if test="title != ''">
+				and tw.title = #{title}
+			</if>
+			<if test="bumen != ''">
+				and td.names = #{bumen}
+			</if>
+		</where>
+	
+	</select>
+
+
+</mapper>

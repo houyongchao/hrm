@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.VacationMapper">
+
+	<select id="findById"  resultType="Vacation" parameterType="String" resultMap="vacationMapper">
+		SELECT * FROM t_vacation AS tv LEFT JOIN t_working AS tw ON tv.workid = tw.id WHERE tv.id=#{id}
+	</select>
+
+	<select id="findAll" resultType="Vacation" resultMap="vacationMapper">
+		SELECT * FROM t_vacation AS tv LEFT JOIN t_working AS tw ON tv.workid = tw.id WHERE tw.zhuangtai = '在职人员'
+	</select>
+	
+	
+	<resultMap type="Vacation" id="vacationMapper">
+		<id column="id" property="id"/>
+		<result column="applicationdate" property="applicationdate"/>
+		<result column="beizhu" property="beizhu"/>
+		<result column="category" property="category"/>
+		<result column="begindate" property="begindate"/>
+		<result column="enddate" property="enddate"/>
+		<result column="days" property="days"/>
+		<association property="worker" column="workid" javaType="Working">
+			<id column="workid" property="id"/>
+			<result column="names" property="names"/>
+		</association>
+	</resultMap>
+	<insert id="save" parameterType="Vacation">
+		insert into t_vacation(id,applicationdate,beizhu,category,begindate,enddate,days,workid) values(#{id},#{application},#{beizhu},#{category},#{begindate},#{enddate},#{days},#{worker.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_vacation where id = #{id}
+	</delete>
+	<update id="update" parameterType="Vacation">
+		update t_vacation set application=#{application},beizhu=#{beizhu},category=#{category},begindate=#{begindate},enddates=#{enddate},days=#{days},workid=#{worker.id} where id=#{id}
+	</update>
+	
+	
+</mapper>

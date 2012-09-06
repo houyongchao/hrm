@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.AccountMapper">
+
+	<select id="findByName" parameterType="String" resultType="Account" resultMap="accountMap">
+		select tu.id as tuid,username,password,tg.id as tgid ,tg.names as groupnames,tp.id, tp.names as permissionnames from t_user as tu left join t_group as tg on tu.groupid = tg.id left join t_permission as tp on tp.groupid = tg.id 
+		<where>
+			<if test="username != ''">
+				username = #{username}
+			</if>
+		</where>
+	</select>
+	 <resultMap type="Account" id="accountMap">
+		<id property="id" column="tuid"/>
+		<result property="username" column="username"/>
+		<result property="password" column="password"/>
+		<association property="group" javaType="Group" column="groupid">
+			<id property="id" column="tgid"/>
+			<result property="names" column="groupnames"/>
+			<collection property="permissionList" ofType="Permission">
+				<id property="id" column="id"/>
+				<result property="names" column="permissionnames"/>
+			</collection>
+		</association>
+	</resultMap> 
+
+</mapper>

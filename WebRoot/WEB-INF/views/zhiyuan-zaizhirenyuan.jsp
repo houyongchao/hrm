@@ -1,0 +1,135 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ include file="base.jsp" %>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  	 <link rel="stylesheet" type="text/css" href="${ basePath}/static/css/bootstrap.css" />
+    <title>在职人员列表</title>
+   <style type="text/css">
+   	 .search-query{
+    	height:28px;
+    	width:150px	
+    }
+   
+   </style>
+</head>
+<body>
+  	<div class="container" style="margin-top:20px; background-color:#fff;">
+		<div class="row">
+			<div class = "span2 well" style="font-size:16px;">				
+				<ul class="nav nav-list" >					 					
+				  <li  class="active" ><a href="${basePath }/people">在职${size }人员</a></li>
+				   <li><a href="${basePath }/people/lizhi" >离职人员</a></li>			   
+				  <li ><a href="${basePath }/people/shiyongrenyuan">试用人员</a></li>
+				  <li ><a href="${basePath }/people/ruzhirenyuan">本月入职人员</a></li>
+				  <li><a href="${basePath }/people/benyuelizhi">本月离职人员</a></li>
+				  <li><a href="${basePath }/people/shiyongdaoqi">本月试用到期人员</a></li>
+				  <li><a href="${basePath }/people/birthday">本月生日人员</a></li>	
+				</ul>					
+			</div>
+			<div class="span9 well"  style="margin-left:10px;">
+				<div>
+					<form action="${basePath }/people/zaizhisearch" method="post">
+						<input type="text" class="search-query" placeholder="姓名" name="names">
+						<input type="text" class="search-query" placeholder="职位" name="title"/>
+						<input type="text"  class="search-query" placeholder="部门" name="bumen">&nbsp;&nbsp;
+						<input type="submit" class="btn" value="搜索" />
+					</form>		
+				</div>
+				<div  style="margin-top:0px;padding-top:15px;">	
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<table width="100%" class="table" id="tt">
+								
+								<c:forEach items="${zaizhiWorking }" var="working" varStatus="v">
+									<tr>
+										<td>${v.count }</td>
+										<td>${working.id }</td>
+										<td>${working.names }</td>
+										<td>${working.sex }</td>
+										<td>${working.age }</td>
+										<td>${working.hiredate }</td>
+										<td>${working.title }</td>
+										<td>${working.workage }</td>
+										<td>${working.education }</td>
+										<td>${working.position }</td>
+										<td>${working.tel }</td>
+										<td>${working.birthplace }</td>
+									</tr>
+								</c:forEach>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(function(){
+				$('#tt').datagrid({
+					url: 'datagrid_data2.json',
+					title: '在职人员工资表',
+					width: 700,
+					height: 'auto',
+					fitColumns: true,
+					columns:[[
+						{field:'itemid',title:'编号',width:14},
+						{field:'productid',title:'工号',width:15},
+						{field:'listprice',title:'姓名',width:18,align:'right'},
+						{field:'unitcost',title:'性别',width:15,align:'right'},
+						{field:'attr1',title:'年龄',width:15,align:'right'},
+						{field:'status',title:'入职时间',width:28,align:'right'},
+						{field:'onbusinessday',title:'职位',width:40,align:'right'},
+						{field:'businesssalary',title:'工龄',width:15,align:'right'},
+						{field:'workage',title:'学历',width:15,align:'right'},
+						{field:'workagesalary',title:'职称',width:20,align:'right'},
+						{field:'extraltime',title:'电话',width:35,align:'right'},
+						{field:'extralsalary',title:'籍贯',width:30,align:'right'}
+					]],
+					onHeaderContextMenu: function(e, field){
+						e.preventDefault();
+						if (!$('#tmenu').length){
+							createColumnMenu();
+						}
+						$('#tmenu').menu('show', {
+							left:e.pageX,
+							top:e.pageY
+						});
+					}
+				});
+		});
+		
+		function createColumnMenu(){
+			var tmenu = $('<div id="tmenu" style="width:100px;"></div>').appendTo('body');
+			var fields = $('#tt').datagrid('getColumnFields');
+			for(var i=0; i<fields.length; i++){
+				$('<div iconCls="icon-ok"/>').html(fields[i]).appendTo(tmenu);
+			}
+			tmenu.menu({
+				onClick: function(item){
+					if (item.iconCls=='icon-ok'){
+						$('#tt').datagrid('hideColumn', item.text);
+						tmenu.menu('setIcon', {
+							target: item.target,
+							iconCls: 'icon-empty'
+						});
+					} else {
+						$('#tt').datagrid('showColumn', item.text);
+						tmenu.menu('setIcon', {
+							target: item.target,
+							iconCls: 'icon-ok'
+						});
+					}
+				}
+			});
+		}
+		
+		
+		});
+	
+	
+	</script>
+</body>
+</html>

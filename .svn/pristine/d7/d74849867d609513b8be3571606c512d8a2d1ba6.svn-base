@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.ZhiyuanMapper">
+	<select id="findZaizhi" resultType="list" resultMap="zaizhiMap">
+		SELECT * FROM t_working AS tw LEFT JOIN t_depart AS td ON tw.departid = td.id 
+	</select>
+	<resultMap type="Working" id="zaizhiMap">
+		<id property="id" column="id"/>
+		<result property="age" column="age"/>
+		<result property="birthday" column="birthday"/>
+		<result property="birthplace" column="birthplace"/>
+		<result property="contractdate" column="contractdate"/>
+		<result property="education" column="education"/>
+		<result property="employeeddate" column="employeeddate"/>
+		<result property="formoflabor" column="formoflabor"/>
+		<result property="hiredate" column="hiredate"/>
+		<result property="names" column="names"/>
+		<result property="position" column="position"/>
+		<result property="sex" column="sex"/>
+		<result property="tel" column="tel"/>
+		<result property="title" column="title"/>
+		<result property="workage" column="workage"/>
+		<result property="zhuangtai" column="zhuangtai"/>
+		<association property="depart" javaType="Depart" column="departid">
+			<id property="id" column="id"/>
+			<result property="names" column="names"/>
+			<result property="englishnames" column="englishnames"/>
+		</association>
+	</resultMap>
+	<select id="findByZaizhi" resultType="list" resultMap="zaizhiMap">
+		SELECT * FROM t_working AS tw LEFT JOIN t_depart AS td ON tw.departid = td.id 
+		<where>
+			<if test="names != ''">
+				tw.names like "%"#{names}"%"
+			</if>
+			<if test="title != ''">
+				and tw.title like "%"#{title}"%"
+			</if>
+			<if test="bumen != ''">
+				and td.names like "%"#{bumen}"%"
+			</if>
+		</where>
+	
+	</select>
+	<select id="findAllDimissions" resultType="list" resultMap="dimissionMap">
+		SELECT * FROM t_dimission AS td LEFT JOIN t_working AS tw ON td.workid = tw.id WHERE tw.zhuangtai like '%离职%'
+	</select>
+	<resultMap type="Dimission" id="dimissionMap">
+		<id property="id" column="id"/>
+		<result property="approver" column="approver"/>
+		<result property="leavedate" column="leavedate"/>
+		<result property="reason" column="reason"/>
+		<association property="work" javaType="Working" column="workid">
+			<id property="id" column="id"/>
+			<result property="age" column="age"/>
+			<result property="birthday" column="birthday"/>
+			<result property="birthplace" column="birthplace"/>
+			<result property="contractdate" column="contractdate"/>
+			<result property="education" column="education"/>
+			<result property="employeeddate" column="employeeddate"/>
+			<result property="formoflabor" column="formoflabor"/>
+			<result property="hiredate" column="hiredate"/>
+			<result property="names" column="names"/>
+			<result property="position" column="position"/>
+			<result property="sex" column="sex"/>
+			<result property="tel" column="tel"/>
+			<result property="title" column="title"/>
+			<result property="workage" column="workage"/>
+			<result property="zhuangtai" column="zhuangtai"/>
+		</association>
+	</resultMap>
+	<select id="findByshengri" parameterType="String" resultType="list" resultMap="zaizhiMap">
+		SELECT * FROM t_working AS tw LEFT JOIN t_depart AS td ON tw.departid = td.id WHERE tw.birthday LIKE "%"#{time}"%"
+	</select>
+	<select id="findshiyongdaoqi" parameterType="String" resultType="list" resultMap="shiyongMap">
+		SELECT ts.id,approver,begindate,enddate,result,zhuanzhengdate ,tw.id,age,birthday,birthplace,contractdate,education,employeeddate,
+		formoflabor,hiredate,names,position,sex,tel,title,workage,zhuangtai FROM t_shiyong AS ts LEFT JOIN t_working AS tw ON ts.workid = tw.id WHERE ts.enddate LIKE #{time}"%"
+	</select>
+	<resultMap type="Shiyong" id="shiyongMap">
+		<id property="id" column="id"/>
+		<result property="approver" column="approver"/>
+		<result property="begindate" column="begindate"/>
+		<result property="enddate" column="enddate"/>
+		<result property="result" column="result"/>
+		<result property="zhuanzhengdate" column="zhuanzhengdate"/>
+		<association property="worker" javaType="Working" column="workid">
+			<id property="id" column="id"/>
+			<result property="age" column="age"/>
+			<result property="birthday" column="birthday"/>
+			<result property="birthplace" column="birthplace"/>
+			<result property="contractdate" column="contractdate"/>
+			<result property="education" column="education"/>
+			<result property="employeeddate" column="employeeddate"/>
+			<result property="formoflabor" column="formoflabor"/>
+			<result property="hiredate" column="hiredate"/>
+			<result property="names" column="names"/>
+			<result property="position" column="position"/>
+			<result property="sex" column="sex"/>
+			<result property="tel" column="tel"/>
+			<result property="title" column="title"/>
+			<result property="workage" column="workage"/>
+			<result property="zhuangtai" column="zhuangtai"/>
+		
+		</association>
+	</resultMap>
+	<select id="findAllshiyong" resultType="list" resultMap="shiyongMap">
+	SELECT ts.id,approver,begindate,enddate,result,zhuanzhengdate ,tw.id,age,birthday,birthplace,contractdate,education,employeeddate,
+		formoflabor,hiredate,names,position,sex,tel,title,workage,zhuangtai FROM t_shiyong AS ts LEFT JOIN t_working AS tw ON ts.workid = tw.id 
+	</select>
+	<select id="findRuZhi" parameterType="String" resultType="list" resultMap="shiyongMap">
+	SELECT ts.id,approver,begindate,enddate,result,zhuanzhengdate ,tw.id,age,birthday,birthplace,contractdate,education,employeeddate,
+		formoflabor,hiredate,names,position,sex,tel,title,workage,zhuangtai FROM t_shiyong AS ts LEFT JOIN t_working AS tw ON ts.workid = tw.id 
+	<where>
+		<if test="time != ''">  
+			ts.enddate like "%"#{time}"%"
+		</if>
+		<if test="result != ''">
+			and ts.result like #{result}"%"
+		</if>
+	</where>
+	</select>
+	
+	
+</mapper>

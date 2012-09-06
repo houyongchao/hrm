@@ -1,0 +1,115 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ include file="base.jsp" %>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>salary</title>
+    <style type="text/css">
+		span{
+			font-size:16px;
+		}
+		.span12{
+			margin-left:0px;
+		}
+	</style>
+  </head>
+  <body>
+    <div class="container">
+		<div class="row well">
+			<div class="span10">
+				<span style="margin-left:30px;">月份:</span>
+				<select id="e3" style="width:200px">
+						<option value="YI">1月份</option>
+						<option value="ER">2月份</option>
+						<option value="SAN">3月份</option>
+						<option value="SI">4月份</option>
+						<option value="WU">5月份</option>
+						<option value="LIU">6月份</option>
+						<option value="QI">7月份</option>
+						<option value="BA">8月份</option>
+						<option value="JIU">9月份</option>
+						<option value="SHI">10月份</option>
+						<option value="SHIYI">11月份</option>
+						<option value="SHIER">12月份</option>
+				</select>
+				<span style="margin-left:40px">部门:</span>
+				<select id="e2" style="width:200px"></select>
+			</div>
+			
+		</div>
+		<div class="row well" style="padding-left:9px;margin-top:0px;">
+			<div class="span12">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>编号</th>
+						<th>工号</th>
+						<th>姓名</th>
+						<th>基本<br/>工资</th>
+						<th>事假<br/>小时</th>
+						<th>事假<br/>扣除</th>
+						<th>出差<br/>天数</th>
+						<th>差补<br/>金额</th>
+						<th>工龄</th>
+						<th>工龄<br/>工资</th>
+						<th>加班<br/>小时</th>
+						<th>加班费</th>
+						<th>合计<br/>工资</th>
+						<th>实发<br/>工资</th>
+						<th>发放<br/>日期</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${salayList }" var="salary" varStatus="v">
+						<tr>
+							<td>${v.count }</td>
+							<td>${salary.id }</td>
+							<td>${salary.worker.names }</td>
+							<td>${salary.basesary }</td>
+							<td>${salary.shijiaxiaoshi }</td>
+							<td>${salary.shijiakouchu }</td>
+							<td>${salary.onbusinessday }</td>
+							<td>${salary.businesssary }</td>
+							<td>${salary.workage }</td>
+							<td>${salary.workagesary }</td>
+							<td>${salary.extralworkhour }</td>
+							<td>${salary.extralworksalary }</td>
+							<td>${salary.total }</td>
+							<td>${salary.shifa }</td>
+							<td>${salary.dates }</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			</div>
+		</div>
+	
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			/* $("#e2").select2({
+				placeholder: "Select a State",
+				allowClear: true
+			});
+			$("#e3").select2({
+				placeholder: "Select a State",
+				allowClear: true
+			}); */
+			$("#e3").click(function(){
+				$("#e2").html("");
+				$.post("depart.action",function(result){
+					$(result).each(function(){
+						$("#e2").append($("<option value="+"'"+this.englishnames+"'"+">"+this.names+"</option>"));
+					
+					});
+				
+				});
+			});
+			
+		});
+	
+	</script>
+  </body>
+</html>

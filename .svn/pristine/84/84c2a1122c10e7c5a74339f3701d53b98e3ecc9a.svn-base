@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.TrainAgencyMapper">
+
+	<select id="findAll" resultType="TrainAgency">
+		select * from t_trainagency;
+	</select>
+	<insert id="save" parameterType="TrainAgency">
+		insert into t_trainagency(id,address,contact,contactemail,contacttels,names) values(#{id},#{address},#{contact},#{contactemail},#{contacttels},#{names})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_trainagency where id = #{id}
+	</delete>
+	<update id="update" parameterType="TrainAgency">
+		update t_trainagency set address=#{address},contact=#{contact},contactemail=#{contactemail},contacttels=#{contacttels},names=#{names} where id=#{id}
+	</update>
+	
+	
+</mapper>

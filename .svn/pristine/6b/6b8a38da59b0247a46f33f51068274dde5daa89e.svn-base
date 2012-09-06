@@ -1,0 +1,29 @@
+package com.hrm.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.hrm.mapper.WorkingMapper;
+import com.hrm.pojo.Working;
+
+@Service
+@Transactional
+public class WorkingService {
+
+	@Autowired
+	private WorkingMapper workmapper;
+	
+	public List<Working> findAll() {
+		return workmapper.findAll();
+	}
+
+	public Working findByName(String names) {
+		return workmapper.findByName(names);
+	}
+
+	
+	
+}

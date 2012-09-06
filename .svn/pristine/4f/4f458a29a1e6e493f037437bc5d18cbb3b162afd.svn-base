@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.LizhiMapper"> 
+
+	<select id="findAll" resultType="list" resultMap="lizhiMap">
+		SELECT td.id as tdid,approver,leavedate,reason,tw.id as twid,age,birthday,birthplace,contractdate,education,employeeddate,
+			formoflabor,hiredate,tw.names as names,position,sex,tel,title,workage,zhuangtai,tde.id as tdeid,tde.names as bumenname,englishnames FROM t_dimission AS td LEFT JOIN t_working AS tw ON td.workid = tw.id LEFT JOIN t_depart AS tde ON tw.departid = tde.id
+	</select>
+	<resultMap type="Dimission" id="lizhiMap">
+		<id property="id" column="tdid"/>
+		<result property="approver" column="approver"/>
+		<result property="leavedate" column="leavedate"/>
+		<result property="reason" column="reason"/>
+		<association property="work" javaType="Working" column="workid">
+			<id property="id" column="twid"/>
+			<result property="age" column="age"/>
+			<result property="birthday" column="birthday"/>
+			<result property="birthplace" column="birthplace"/>
+			<result property="contractdate" column="contractdate"/>
+			<result property="education" column="education"/>
+			<result property="employeeddate" column="employeeddate"/>
+			<result property="formoflabor" column="formoflabor"/>
+			<result property="hiredate" column="hiredate"/>
+			<result property="names" column="names"/>
+			<result property="position" column="position"/>
+			<result property="sex" column="sex"/>
+			<result property="tel" column="tel"/>
+			<result property="title" column="title"/>
+			<result property="workage" column="workage"/>
+			<result property="zhuangtai" column="zhuangtai"/>
+			<association property="departDto" javaType="DepartDto" column="departid">
+				<id property="id" column="tdeid"/>
+				<result property="bumenname" column="bumenname"/>
+				<result property="englishnames" column="englishnames"/>
+			</association>
+		</association>
+	</resultMap>
+	<select id="findBySearch" parameterType="String" resultType="list" resultMap="lizhiMap">
+		SELECT td.id as tdid,approver,leavedate,reason,tw.id as twid,age,birthday,birthplace,contractdate,education,employeeddate,
+			formoflabor,hiredate,tw.names as names,position,sex,tel,title,workage,zhuangtai,tde.id as tdeid,tde.names as bumenname,englishnames FROM t_dimission AS td LEFT JOIN t_working AS tw ON td.workid = tw.id LEFT JOIN t_depart AS tde ON tw.departid = tde.id
+	<where>
+		<if test="name != ''">
+			tw.names like "%"#{name}"%"
+		</if>
+	</where>
+	</select>
+	<select id="findByWorkid" parameterType="String" resultType="Dimission" resultMap="lizhiMap2">
+		SELECT td.id AS tdid,approver,leavedate,reason,tw.id AS twid,age,birthday,birthplace,contractdate,education,employeeddate,
+		formoflabor,hiredate,tw.names AS `names`,`position`,sex,tel,title,workage,zhuangtai FROM t_dimission AS td LEFT JOIN t_working AS tw ON td.workid = tw.id 
+		<where>
+			<if test="id != ''">
+				tw.id = #{id}
+			</if>
+		</where>
+	</select>
+	<resultMap type="Dimission" id="lizhiMap2">
+		<id property="id" column="tdid"/>
+		<result property="approver" column="approver"/>
+		<result property="leavedate" column="leavedate"/>
+		<result property="reason" column="reason"/>
+		<association property="work" javaType="Working" column="workid">
+			<id property="id" column="twid"/>
+			<result property="age" column="age"/>
+			<result property="birthday" column="birthday"/>
+			<result property="birthplace" column="birthplace"/>
+			<result property="contractdate" column="contractdate"/>
+			<result property="education" column="education"/>
+			<result property="employeeddate" column="employeeddate"/>
+			<result property="formoflabor" column="formoflabor"/>
+			<result property="hiredate" column="hiredate"/>
+			<result property="names" column="names"/>
+			<result property="position" column="position"/>
+			<result property="sex" column="sex"/>
+			<result property="tel" column="tel"/>
+			<result property="title" column="title"/>
+			<result property="workage" column="workage"/>
+			<result property="zhuangtai" column="zhuangtai"/>
+		</association>
+	</resultMap>
+	<update id="saveedit" parameterType="String">
+		update t_dimission set reason = #{reason},approver = #{approver},leavedate = #{leavedate} 
+		<where>
+			<if test="workid != ''">
+				workid = #{workid}
+			</if>
+		</where>
+	
+	</update>
+	<delete id="dellizhi" parameterType="String">
+		delete from t_dimission 
+		<where>
+			<if test="id != ''">
+				workid = #{id}
+			</if>
+		</where>
+	
+	</delete>
+</mapper> 

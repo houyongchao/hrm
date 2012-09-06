@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.TransferMapper">
+
+		<select id="findById" resultType="Transfer" parameterType="String" resultMap="transferMapper">
+		select * from t_transfer as ts  left join t_working as tw on ts.workid = tw.id where ts.id = #{id}
+		</select>
+		
+
+	<select id="findAll" resultType="Transfer" resultMap="transferMapper">
+		select * from t_transfer as ts  left join t_working as tw on ts.workid = tw.id where tw.zhuangtai = '在职人员'
+	</select>
+	
+	<select id="findAllSearch" resultType="Transfer" resultMap="transferMapper" parameterType="transferDto">
+		select * from t_transfer as ts  left join t_working as tw on ts.workid = tw.id
+		
+		<where>
+ 			<if test="beforedepart !='' ">
+ 				ts.beforedepart = #{beforedepart}
+ 			</if>
+ 			<if test="approver !='' ">
+ 				and ts.approver = #{approver}
+ 			</if>
+ 			<if test="names !='' ">
+ 				and tw.names = #{names}
+ 			</if>
+ 		</where>
+	</select>
+	
+	
+	<resultMap type="Transfer" id="transferMapper">
+		<id column="id" property="id"/>
+		<result column="afterdepart" property="afterdepart"/>
+		<result column="beforedepart" property="beforedepart"/>
+		<result column="approver" property="approver"/>
+		<result column="createtime" property="createtime"/>
+		<result column="position" property="position"/>
+		<result column="reason" property="reason"/>
+		<result column="transferdate" property="transferdate"/>
+		<association property="worker" column="workid" javaType="Working">
+			<id column="workid" property="id"/>
+			<result column="names" property="names"/>
+		</association>
+	</resultMap>
+	<insert id="save" parameterType="Transfer">
+		INSERT INTO t_transfer(id,afterdepart,approver,beforedepart,reason,transferdate,workid) VALUES(#{id},#{afterdepart},#{approver},#{beforedepart},#{reason},#{transferdate},#{worker.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_transfer where id = #{id}
+	</delete>
+	<update id="update" parameterType="Transfer">
+		update t_transfer set afterdepart=#{afterdepart},approver=#{approver},beforedepart=#{beforedepart},position=#{position},reason=#{reason},transferdate=#{transferdate},workid=#{worker.id} where id=#{id}
+	</update>
+	
+	
+</mapper>

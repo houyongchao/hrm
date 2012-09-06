@@ -1,0 +1,83 @@
+package com.hrm.pojo;
+
+import java.util.List;
+
+public class Zhaopin {
+	private String id;
+	private String position;
+	private String qudao;
+	private String requirenum;
+	private String content;
+	private String begindate;
+	private String enddate;
+	private String beizhu;
+	private Depart depart;
+	private List<Interview> interviewList;
+	
+	
+	
+	public Depart getDepart() {
+		return depart;
+	}
+	public void setDepart(Depart depart) {
+		this.depart = depart;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	public String getQudao() {
+		return qudao;
+	}
+	public void setQudao(String qudao) {
+		this.qudao = qudao;
+	}
+	public String getRequirenum() {
+		return requirenum;
+	}
+	public void setRequirenum(String requirenum) {
+		this.requirenum = requirenum;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getBegindate() {
+		return begindate;
+	}
+	public void setBegindate(String begindate) {
+		this.begindate = begindate;
+	}
+	public String getEnddate() {
+		return enddate;
+	}
+	public void setEnddate(String enddate) {
+		this.enddate = enddate;
+	}
+	public String getBeizhu() {
+		return beizhu;
+	}
+	public void setBeizhu(String beizhu) {
+		this.beizhu = beizhu;
+	}
+	
+	public List<Interview> getInterviewList() {
+		return interviewList;
+	}
+	public void setInterviewList(List<Interview> interviewList) {
+		this.interviewList = interviewList;
+	}
+	
+	
+	
+}

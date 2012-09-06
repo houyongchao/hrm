@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.RewardsMapper">
+
+	<select id="findById" resultType="Rewards" parameterType="String" resultMap="rewardMapper">
+		select * from t_rewards as tr left join t_working as tw on tr.workid = tw.id where tr.id = #{id}
+	</select>
+
+	<select id="findAll" resultType="Rewards" resultMap="rewardMapper">
+		select * from t_rewards as tr left join t_working as tw on tr.workid = tw.id where tw.zhuangtai='在职'
+	</select>
+	
+	<select id="findAllSearch" resultType="Rewards" resultMap="rewardMapper" parameterType="RewardsDto">
+		select * from t_rewards as tr left join t_working as tw on tr.workid = tw.id
+		
+		<where>
+ 			<if test="category !='' ">
+ 				tr.category = #{category}
+ 			</if>
+ 			<if test="approver !='' ">
+ 				and tr.approver = #{approver}
+ 			</if>
+ 			<if test="names !='' ">
+ 				and tw.names = #{names}
+ 			</if>
+ 		</where>
+	</select>
+	
+	<resultMap type="Rewards" id="rewardMapper">
+		<id column="id" property="id"/>
+		<result column="approver" property="approver"/>
+		<result column="beizhu" property="beizhu"/>
+		<result column="category" property="category"/>
+		<result column="content" property="content"/>
+		<result column="dates" property="dates"/>
+		<result column="reason" property="reason"/>
+		<association property="worker" column="workid" javaType="Working">
+			<id column="workid" property="id"/>
+			<result column="names" property="names"/>
+		</association>
+		
+	</resultMap>
+	<insert id="insert" parameterType="Rewards">
+		insert into t_rewards(id,approver,beizhu,category,content,dates,reason,workid) values(#{id},#{approver},#{beizhu},#{category},#{content},#{dates},#{reason},#{worker.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_rewards where id = #{id}
+	</delete>
+	<update id="update" parameterType="Rewards">
+		update t_rewards set approver=#{approver},beizhu=#{beizhu},category=#{category},content=#{content},dates=#{dates},reason=#{reason},workid=#{worker.id} where id=#{id}
+	</update>
+	
+	
+</mapper>

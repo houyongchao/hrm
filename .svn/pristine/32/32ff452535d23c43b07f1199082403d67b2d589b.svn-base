@@ -1,0 +1,79 @@
+package com.hrm.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.hrm.pojo.Rewards;
+import com.hrm.pojo.Working;
+import com.hrm.service.JiangfaService;
+import com.hrm.service.WorkingService;
+import com.hrm.util.PKUtil;
+
+@Controller
+@RequestMapping("/rewards")
+public class JiangfaController {
+
+	@Autowired
+	private JiangfaService jiangfaService;
+	
+	@Autowired
+	private WorkingService workService;
+	
+	@RequestMapping("/showAlljiangfa")
+	public String showAll(Model model){
+		List<Rewards> rewardlist = jiangfaService.findAll();
+		
+		model.addAttribute("rewardlist", rewardlist);
+		return "showAlljiangfa";
+	}
+	
+	
+	@RequestMapping("/edit/{id}")
+	public String eidt(@PathVariable String id,Model model){
+		
+		Rewards rewards = jiangfaService.findById(id);
+		model.addAttribute("rewards", rewards);
+		return "editjiangfa";
+	}
+	
+	
+	@RequestMapping("/update")
+	public String update(Rewards rewards,RedirectAttributes redirectAttributes){
+		redirectAttributes.addFlashAttribute("editsuccess", "修改成功");
+		jiangfaService.update(rewards);
+		return "redirect:/rewards/showAlljiangfa";
+	}
+	
+	@RequestMapping("/add")
+	public String add(Model model){
+		List<Working> wlist = workService.findAll();
+		model.addAttribute("wlist", wlist);
+		return "addjiangfa";
+	}
+	
+	@RequestMapping("/save")
+	public String save(Rewards rewards,String names,RedirectAttributes redirectAttributes){
+		Working work = workService.findByName(names);
+		rewards.setId(PKUtil.getPk());
+		rewards.setWorker(work);
+		redirectAttributes.addFlashAttribute("savesuccess", "保存成功");
+		jiangfaService.save(rewards);
+		return "redirect:/rewards/showAlljiangfa";
+	}
+	
+	
+	@RequestMapping("/del/{id}")
+	public String del(@PathVariable String id,RedirectAttributes redirectAttributes){
+		redirectAttributes.addFlashAttribute("delsuccess", "删除成功");
+	
+		jiangfaService.del(id);
+		return "redirect:/rewards/showAlljiangfa";
+	}
+
+}

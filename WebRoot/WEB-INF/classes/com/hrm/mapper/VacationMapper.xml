@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.VacationMapper">
+
+	<select id="findById"  resultType="Vacation" parameterType="String" resultMap="vacationMapper">
+		SELECT * FROM t_vacation AS tv LEFT JOIN t_working AS tw ON tv.workid = tw.id WHERE tv.id=#{id}
+	</select>
+
+	<select id="findAll" resultType="Vacation" resultMap="vacationMapper">
+		SELECT * FROM t_vacation AS tv LEFT JOIN t_working AS tw ON tv.workid = tw.id WHERE tw.zhuangtai = '在职'
+	</select>
+	
+	
+	<select id="findAllSearch" resultType="Vacation" resultMap="vacationMapper" parameterType="VacationDto">
+		SELECT * FROM t_vacation AS tv LEFT JOIN t_working AS tw ON tv.workid = tw.id
+		
+		<where>
+ 			<if test="category !='' ">
+ 				tv.category = #{category}
+ 			</if>
+ 			<if test="approver !='' ">
+ 				and tv.approver = #{approver}
+ 			</if>
+ 			<if test="names !='' ">
+ 				and tw.names = #{names}
+ 			</if>
+ 		</where>
+	</select>
+	
+	<resultMap type="Vacation" id="vacationMapper">
+		<id column="id" property="id"/>
+		<result column="applicationdate" property="applicationdate"/>
+		<result column="beizhu" property="beizhu"/>
+		<result column="category" property="category"/>
+		<result column="begindate" property="begindate"/>
+		<result column="enddate" property="enddate"/>
+		<result column="xiaojiadate" property="xiaojiadate"/>
+		<result column="approver" property="approver"/>
+		<result column="days" property="days"/>
+		<association property="worker" column="workid" javaType="Working">
+			<id column="workid" property="id"/>
+			<result column="names" property="names"/>
+		</association>
+	</resultMap>
+	<insert id="save" parameterType="Vacation">
+		insert into t_vacation(id,applicationdate,beizhu,category,begindate,enddate,xiaojiadate,approver,days,workid) values(#{id},#{applicationdate},#{beizhu},#{category},#{begindate},#{enddate},#{xiaojiadate},#{approver},#{days},#{worker.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_vacation where id = #{id}
+	</delete>
+	<update id="update" parameterType="Vacation">
+		update t_vacation set applicationdate=#{applicationdate},beizhu=#{beizhu},category=#{category},begindate=#{begindate},enddate=#{enddate},xiaojiadate=#{xiaojiadate},approver=#{approver},days=#{days},workid=#{worker.id} where id=#{id}
+	</update>
+	
+	
+</mapper>

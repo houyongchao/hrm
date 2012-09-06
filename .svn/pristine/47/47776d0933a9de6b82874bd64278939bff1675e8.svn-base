@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.InterviewMapper">
+
+	<select id="findAllSearch" resultType="Interview" parameterType="Interview">
+		select * from t_interview
+		<where>
+			<if test="interviewee !=''">
+				interviewee = #{interviewee}
+			</if>
+			<if test="interviewer != ''">
+				and interviewer = #{interviewer}
+			</if>
+			<if test="position != ''">
+				 and position = #{position}
+			</if>
+		</where>
+	</select>
+	<select id="findById"  resultType="Interview" parameterType="String" >
+		select * from t_interview WHERE id=#{id}
+	</select>
+
+	<select id="findAll" resultType="Interview">
+		select * from t_interview ;
+	</select>
+	
+	<insert id="save" parameterType="Interview">
+		insert into t_interview(id,approver,content,dates,interviewee,interviewer,position,result) values(#{id},#{approver},#{content},#{dates},#{interviewee},#{interviewer},#{position},#{result})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_interview where id = #{id}
+	</delete>
+	<update id="update" parameterType="Interview">
+		update t_interview set approver=#{approver},dates=#{dates},content=#{content},interviewee=#{interviewee},position=#{position},result=#{result},interviewer=#{interviewer} where id=#{id}
+	</update>
+	
+	
+</mapper>

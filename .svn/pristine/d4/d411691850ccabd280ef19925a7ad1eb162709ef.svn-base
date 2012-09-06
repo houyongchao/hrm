@@ -1,0 +1,34 @@
+package com.hrm.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.hrm.pojo.Working;
+import com.hrm.service.WorkingService;
+
+@Controller
+@RequestMapping("/people")
+public class ZhiyuanController {
+
+	@Autowired
+	private WorkingService workingService;
+	
+	@RequestMapping("")
+	public String list(Model model){
+		List<Working> zaizhiWorking = workingService.findZaiZhi();
+		model.addAttribute("zaizhiWorking", zaizhiWorking);
+		return "zhiyuan-zaizhirenyuan";
+	}
+	@RequestMapping(value="/zaizhisearch",method=RequestMethod.POST)
+	public String zaizhisearch(String names,String title,String bumen,Model model){
+		System.out.println(names+":"+title+":"+bumen);
+		List<Working> list = workingService.findzaizhiBysearch(names,title,bumen);
+		model.addAttribute("zaizhiWorking", list);
+		return "zhiyuan-zaizhirenyuan";
+	}
+}

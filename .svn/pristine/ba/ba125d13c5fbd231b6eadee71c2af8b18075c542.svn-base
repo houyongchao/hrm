@@ -1,0 +1,23 @@
+package com.hrm.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.hrm.mapper.ZhaopinMapper;
+import com.hrm.pojo.Zhaopin;
+
+@Service
+@Transactional
+public class ZhaopinService {
+
+	@Autowired
+	private ZhaopinMapper mapper;
+	
+	public List<Zhaopin> findAll() {
+		return mapper.findAll();
+	}
+
+}

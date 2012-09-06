@@ -1,0 +1,10 @@
+package com.hrm.mapper;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.hrm.pojo.Account;
+
+public interface AccountMapper {
+
+	public Account findByName(@Param("username")String username);
+}

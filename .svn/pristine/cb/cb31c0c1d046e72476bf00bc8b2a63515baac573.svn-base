@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.DimissionMapper">
+
+	<select id="findAll" resultType="Dimission">
+		select * from t_dimission;
+	</select>
+	<insert id="save" parameterType="Dimission">
+		insert into t_dimission(id,approver,leavedate,reason,workid) values(#{id},#{approver},#{leavedate},#{reason},#{working.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_dimission where id = #{id}
+	</delete>
+	<update id="update" parameterType="Dimission">
+		update t_dimission set approver=#{approver},leavedate=#{leavedate},reason=#{reason},workid=#{working.id} where id=#{id}
+	</update>
+	
+	
+</mapper>

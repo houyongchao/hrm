@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.WorkingMapper">
+
+	<select id="findAll" resultType="Working">
+		select * from t_working where zhuangtai='在职人员';
+	</select>
+	
+	<select id="findByName" parameterType="String" resultType="Working">
+		SELECT * FROM t_working WHERE `names` = #{names} and zhuangtai='在职人员';
+	</select>
+	<update id="updateWorker" parameterType="String">
+		UPDATE t_working as tw SET employeeddate = #{time} ,zhuangtai = '离职' WHERE tw.names = #{name}
+	</update>
+</mapper>

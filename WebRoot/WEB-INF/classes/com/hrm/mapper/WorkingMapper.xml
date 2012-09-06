@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.WorkingMapper">
+
+	<select id="findAll" resultType="Working">
+		select * from t_working where zhuangtai='在职人员';
+	</select>
+	
+	<select id="findByName" parameterType="String" resultType="Working" resultMap="workMap">
+		SELECT id ,age,birthday,birthplace,contractdate,education,employeeddate,
+		formoflabor,hiredate,`names`,`position`,sex,tel,title,workage,zhuangtai FROM t_working WHERE `names` = #{names} and zhuangtai='离职';
+	</select>
+	<resultMap type="Working" id="workMap">
+		<id property="id" column="id"/>
+		<result property="age" column="age"/>
+		<result property="birthday" column="birthday"/>
+		<result property="birthplace" column="birthplace"/>
+		<result property="contractdate" column="contractdate"/>
+		<result property="education" column="education"/>
+		<result property="employeeddate" column="employeeddate"/>
+		<result property="formoflabor" column="formoflabor"/>
+		<result property="hiredate" column="hiredate"/>
+		<result property="names" column="names"/>
+		<result property="position" column="position"/>
+		<result property="sex" column="sex"/>
+		<result property="tel" column="tel"/>
+		<result property="title" column="title"/>
+		<result property="workage" column="workage"/>
+		<result property="zhuangtai" column="zhuangtai"/>
+	</resultMap>
+	
+	
+	
+	<update id="updateWorker" parameterType="String">
+		UPDATE t_working as tw SET employeeddate = #{time} ,zhuangtai = '离职' WHERE tw.names = #{name}
+	</update>
+</mapper>

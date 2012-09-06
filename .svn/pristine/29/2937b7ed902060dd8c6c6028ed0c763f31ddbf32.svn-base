@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.TrainAgencyMapper">
+
+	<select id="findById" resultType="TrainAgency" parameterType="String" >
+		select * from t_trainagency where id = #{id}
+	</select>
+
+	<select id="findByTel" parameterType="String" resultType="TrainAgency">
+		SELECT * FROM t_trainagency WHERE contactemail = #{contactemail}
+	</select>
+	
+	<select id="findAll" resultType="TrainAgency">
+		select * from t_trainagency;
+	</select>
+	
+	<select id="findAllSearch" resultType="list"  parameterType="TrainAgency" resultMap="trainMapper">
+		select * from t_trainagency 
+		<where>
+ 			<if test="names !='' ">
+ 				names = #{names}
+ 			</if>
+ 			<if test="address !='' ">
+ 				and address = #{address}
+ 			</if>
+ 			<if test="contact !='' ">
+ 				and contact = #{contact}
+ 			</if>
+ 		</where>
+	</select>
+	
+	<resultMap type="TrainAgency" id="trainMapper">
+		<id column="id" property="id"/>
+		<result column="address" property="address"/>
+		<result column="names" property="names"/>
+		<result column="contact" property="contact"/>
+		<result column="contacttels" property="contacttels"/>
+		<result column="contactemail" property="contactemail"/>
+	</resultMap>
+	
+	<insert id="save" parameterType="TrainAgency">
+		insert into t_trainagency(id,address,contact,contactemail,contacttels,names) values(#{id},#{address},#{contact},#{contactemail},#{contacttels},#{names})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_trainagency where id = #{id}
+	</delete>
+	<update id="update" parameterType="TrainAgency">
+		update t_trainagency set address=#{address},contact=#{contact},contactemail=#{contactemail},contacttels=#{contacttels},names=#{names} where id=#{id}
+	</update>
+	
+	
+</mapper>

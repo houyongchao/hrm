@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrm.mapper.TransferMapper">
+
+	<select id="findAll" resultType="Transfer">
+		select * from t_vacation;
+	</select>
+	<insert id="save" parameterType="Transfer">
+		insert into t_transfer(id,afterdepart,approver,beforedepart,createtime,position,reason,transferdate,workid) values(#{id},#{afterdepart},#{approver},#{beforedepart},#{createtime},#{position},#{reason},#{working.id})
+	</insert>
+	<delete id="del" parameterType="String" >
+	 	delete from t_transfer where id = #{id}
+	</delete>
+	<update id="update" parameterType="Transfer">
+		update t_transfer set afterdepart=#{afterdepart},approver=#{approver},beforedepart=#{beforedepart},createtime=#{createtime},position=#{position},reason=#{reason},transferdate=#{transferdate},workid=#{working.id} where id=#{id}
+	</update>
+	
+	
+</mapper>
